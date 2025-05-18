@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Busca de Filmes - Título</title>
+</head>
+<body>
+    <a href="http://localhost:3000/filmes/buscar-filme"><strong>Voltar</strong></a>
+    <h1>Pesquisa de Filmes pelo Título</h1>
+    <p>Preencha o formulário de acordo com o título do filme que queira pesquisar</p>
+    <form action="http://localhost:3000/filmes/buscar-filme-titulo" method="post">
+        <label for="título">Título do filme</label><br>
+        <input type="text" id="título" name="título" required><br><br>
+
+        <button type="submit"><strong>Pesquisar</strong></button>
+    </form>
+</body>
+</html>
