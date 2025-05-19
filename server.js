@@ -21,25 +21,25 @@ function SalvarFilmes() {
     fs.writeFileSync(filmesPath, JSON.stringify(filmes, null, 2));
 }
 
-function SalvarDadosFilme(filmes){ // OUTRO NOME PARA A FUNÇÃO NÃO CONFLITAR COM A OUTRA!
+function SalvarDadosFilme(filmes) { // OUTRO NOME PARA A FUNÇÃO NÃO CONFLITAR COM A OUTRA!
     fs.writeFileSync(filmesPath, JSON.stringify(filmes, null, 2));
 }
 
-function ExcluirFilme(filmes){ // OUTRO NOME PARA A FUNÇÃO NÃO CONFLITAR COM A OUTRA!
+function ExcluirFilme(filmes) { // OUTRO NOME PARA A FUNÇÃO NÃO CONFLITAR COM A OUTRA!
     fs.writeFileSync(filmesPath, JSON.stringify(filmes, null, 2));
 }
 
 // FUNCTIONS BUSCAR:
 
-function BuscarFilmesTítulo(título){ // PESQUISA PELO TÍTULO, NÃO UTILIZA FILTER POIS UM FILME PODE TER SOMENTE UM TÍTULO
+function BuscarFilmesTítulo(título) { // PESQUISA PELO TÍTULO, NÃO UTILIZA FILTER POIS UM FILME PODE TER SOMENTE UM TÍTULO
     return filmes.find(filme => filme.título.toLowerCase() === título.toLowerCase());
 }
 
-function BuscarFilmesDiretor(diretor){ // PESQUISA PELO DIRETOR, USANDO FILTER PARA RESULTADOS COM MAIS DE 1 JSON
+function BuscarFilmesDiretor(diretor) { // PESQUISA PELO DIRETOR, USANDO FILTER PARA RESULTADOS COM MAIS DE 1 JSON
     return filmes.filter(filme => String(filme.diretor) === String(diretor)); // PERGUNTAR PARA PROF
 }
 
-function BuscarFilmesAno(ano){ // PESQUISA PELO ANO, USANDO FILTER PARA RESULTADOS COM MAIS DE 1 JSON
+function BuscarFilmesAno(ano) { // PESQUISA PELO ANO, USANDO FILTER PARA RESULTADOS COM MAIS DE 1 JSON
     return filmes.filter(filme => String(filme.ano) === String(ano)); // PERGUNTAR PARA PROF
 }
 
@@ -82,11 +82,11 @@ app.post('/filmes/buscar-filme-titulo', (req, res) => {
     const filmeBuscado = req.body.título;
     const filmeEncontrado = BuscarFilmesTítulo(filmeBuscado);
 
-    if(filmeEncontrado){
+    if (filmeEncontrado) {
         res.send(`<h1>Filme encontrado:</h1><pre>${JSON.stringify(filmeEncontrado, null, 2)}</pre>
         <a href="http://localhost:3000/filmes/buscar-filme"><strong>Voltar</strong></a>`);
     }
-    else{
+    else {
         res.send(`<h1>Filme não encontrado, tente novamente.</h1>
             <a href="http://localhost:3000/filmes/buscar-filme-titulo"><strong>Voltar</strong></a>`);
     }
@@ -104,11 +104,11 @@ app.post('/filmes/buscar-filme-diretor', (req, res) => {
     const filmeBuscado = req.body.diretor;
     const filmeEncontrado = BuscarFilmesDiretor(filmeBuscado);
 
-    if(filmeEncontrado.length > 0){ // PERGUNTAR PARA PROF
+    if (filmeEncontrado.length > 0) { // PERGUNTAR PARA PROF
         res.send(`<h1>Filme(s) encontrado(s):</h1><pre>${JSON.stringify(filmeEncontrado, null, 2)}</pre>
-        <a href="http://localhost:3000/filmes/buscar-filme"><strong>Voltar</strong></a>`);        
+        <a href="http://localhost:3000/filmes/buscar-filme"><strong>Voltar</strong></a>`);
     }
-    else{
+    else {
         res.send(`<h1>Diretor do(s) filme(s) não encontrado, tente novamente.</h1>
             <a href="http://localhost:3000/filmes/buscar-filme-diretor"><strong>Voltar</strong></a>`);
     }
@@ -126,11 +126,11 @@ app.post('/filmes/buscar-filme-ano', (req, res) => {
     const filmeBuscado = req.body.ano;
     const filmeEncontrado = BuscarFilmesAno(filmeBuscado);
 
-    if(filmeEncontrado.length > 0){ // PERGUNTAR PARA PROF
+    if (filmeEncontrado.length > 0) { // PERGUNTAR PARA PROF
         res.send(`<h1>Filme(s) encontrado(s):</h1><pre>${JSON.stringify(filmeEncontrado, null, 2)}</pre>
         <a href="http://localhost:3000/filmes/buscar-filme"><strong>Voltar</strong></a>`);
     }
-    else{
+    else {
         res.send(`<h1>Ano de Lançamento do(s) filme(s) não encontrado(s), tente novamente.</h1>
             <a href="http://localhost:3000/filmes/buscar-filme-ano"><strong>Voltar</strong></a>`);
     }
@@ -179,13 +179,13 @@ app.post('/filmes/atualizar-filme', (req, res) => {
 
     const filmesIndex = filmes.findIndex(filme => filme.título.toLowerCase() === título.toLowerCase());
 
-    if(filmesIndex === -1){
+    if (filmesIndex === -1) {
         res.send(`<h1>Título do filme solicitado não encontrado, tente novamente.</h1>
             <a href="http://localhost:3000/filmes/atualizar-filme"><strong>Voltar</strong></a>`
         );
         return;
     }
-    else{
+    else {
         filmes[filmesIndex].título = título;
         filmes[filmesIndex].diretor = diretor;
         filmes[filmesIndex].ano = ano;
@@ -212,12 +212,12 @@ app.post('/filmes/excluir-filme', (req, res) => {
 
     let filmesIndex = filmes.findIndex(filme => filme.título.toLowerCase() === título.toLowerCase());
 
-    if(filmesIndex === -1){
+    if (filmesIndex === -1) {
         res.send(`<h1>Filme não encontrado, tente novamente.</h1>
             <a href="http://localhost:3000/filmes/excluir-filme"><strong>Voltar</strong></a>`);
-            return;
+        return;
     }
-    else{
+    else {
         res.send(`
             <script>
             if (confirm('Tem certeza de que quer excluir o filme ${título}?')){
@@ -232,9 +232,6 @@ app.post('/filmes/excluir-filme', (req, res) => {
 
 app.get('/filmes/excluir-filme-confirmado', (req, res) => {
     const título = req.query.título;
-
-    let filmesData = fs.readFileSync(filmesPath, 'utf-8');
-    let filmes = JSON.parse(filmesData);
 
     const filmesIndex = filmes.findIndex(filme => filme.título.toLowerCase() === título.toLowerCase());
 
