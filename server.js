@@ -35,12 +35,12 @@ function BuscarFilmesTítulo(título) {
     return filmes.find(filme => filme.título.toLowerCase() === título.toLowerCase());
 }
 
-function BuscarFilmesDiretor(diretor) {
-    return filmes.find(filme => filme.diretor.toLowerCase() === diretor.toLowerCase());
+function BuscarFilmesDiretor(diretor) { // BUSCA PARA MAIS DE 1 JSON
+    return filmes.filter(filme => String(filme.diretor) === String(diretor));
 }
 
-function BuscarFilmesAno(ano) {
-    return filmes.find(filme => filme.ano.toLowerCase() === ano.toLowerCase());
+function BuscarFilmesAno(ano) { // BUSCA PARA MAIS DE 1 JSON
+    return filmes.filter(filme => String(filme.ano) === String(ano));
 }
 
 // ROTA PRINCIPAL:
