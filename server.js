@@ -36,11 +36,11 @@ function BuscarFilmesTítulo(título) { // PESQUISA PELO TÍTULO, NÃO UTILIZA F
 }
 
 function BuscarFilmesDiretor(diretor) { // PESQUISA PELO DIRETOR, USANDO FILTER PARA RESULTADOS COM MAIS DE 1 JSON
-    return filmes.filter(filme => String(filme.diretor) === String(diretor)); // PERGUNTAR PARA PROF
+    return filmes.find(filme => filme.diretor.toLowerCase() === diretor.toLowerCase()); // PERGUNTAR PARA PROF
 }
 
 function BuscarFilmesAno(ano) { // PESQUISA PELO ANO, USANDO FILTER PARA RESULTADOS COM MAIS DE 1 JSON
-    return filmes.filter(filme => String(filme.ano) === String(ano)); // PERGUNTAR PARA PROF
+    return filmes.find(filme => filme.ano.toLowerCase() === ano.toLowerCase()); // PERGUNTAR PARA PROF
 }
 
 // ROTA PRINCIPAL:
@@ -53,15 +53,11 @@ app.get('/', (req, res) => {
 
 app.get('/filmes', (req, res) => {
 
-    const html = path.join(__dirname, 'filmes.html');
-    const htmldata = fs.readFileSync(html, 'utf-8');
-
-    const filmesPath = path.join(__dirname, 'filmes.json');
-    const filmesData = fs.readFileSync(filmesPath, 'utf-8');
-
-    const resultado = htmldata.replace('{{filmesJSON}}', filmesData); // PERGUNTAR PARA PROF
-
-    res.send(resultado);
+    res.send(`<a href="http://localhost:3000/"><strong>Voltar</strong></a>
+    <h1>Catálogo com todos os filmes</h1>
+    <a href="http://localhost:3000/filmes/buscar-filme"><strong>Pesquisar Filmes</strong></a>
+    <pre>${JSON.stringify(filmes, null, 2)}</pre>
+`);
 });
 
 // GET TIPO DE BUSCA:
@@ -104,7 +100,7 @@ app.post('/filmes/buscar-filme-diretor', (req, res) => {
     const filmeBuscado = req.body.diretor;
     const filmeEncontrado = BuscarFilmesDiretor(filmeBuscado);
 
-    if (filmeEncontrado.length > 0) { // PERGUNTAR PARA PROF
+    if (filmeEncontrado) { // PERGUNTAR PARA PROF
         res.send(`<h1>Filme(s) encontrado(s):</h1><pre>${JSON.stringify(filmeEncontrado, null, 2)}</pre>
         <a href="http://localhost:3000/filmes/buscar-filme"><strong>Voltar</strong></a>`);
     }
@@ -126,7 +122,7 @@ app.post('/filmes/buscar-filme-ano', (req, res) => {
     const filmeBuscado = req.body.ano;
     const filmeEncontrado = BuscarFilmesAno(filmeBuscado);
 
-    if (filmeEncontrado.length > 0) { // PERGUNTAR PARA PROF
+    if (filmeEncontrado) { // PERGUNTAR PARA PROF
         res.send(`<h1>Filme(s) encontrado(s):</h1><pre>${JSON.stringify(filmeEncontrado, null, 2)}</pre>
         <a href="http://localhost:3000/filmes/buscar-filme"><strong>Voltar</strong></a>`);
     }
