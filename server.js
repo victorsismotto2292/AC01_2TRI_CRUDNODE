@@ -170,9 +170,6 @@ app.get('/filmes/atualizar-filme', (req, res) => {
 app.post('/filmes/atualizar-filme', (req, res) => {
     const { título, diretor, ano } = req.body;
 
-    let filmesData = fs.readFileSync(filmesPath, 'utf-8');
-    let filmes = JSON.parse(filmesData);
-
     const filmesIndex = filmes.findIndex(filme => filme.título.toLowerCase() === título.toLowerCase());
 
     if (filmesIndex === -1) {
